@@ -43,7 +43,11 @@ const translations = {
         confLinkInfo: 'You will receive a video consultation link on WhatsApp shortly.',
         bookAnotherText: 'Book Another Appointment',
         popupText: 'Not sure how to proceed?',
-        popupBtnText: 'Message on WhatsApp'
+        popupBtnText: 'Message on WhatsApp',
+        consentText: 'I have read and agree to the ',
+        termsLinkText: 'Terms & Conditions',
+        modalTitle: 'Terms & Conditions',
+        acceptTermsBtn: 'I Understand and Accept'
     },
     hindi: {
         bookConsultationText: 'अपना परामर्श बुक करें',
@@ -80,7 +84,12 @@ const translations = {
         confLinkInfo: 'आपको जल्द ही WhatsApp पर वीडियो कंसल्टेशन लिंक मिलेगा।',
         bookAnotherText: 'दूसरी अपॉइंटमेंट बुक करें',
         popupText: 'आगे कैसे बढ़ें समझ नहीं आ रहा?',
-        popupBtnText: 'WhatsApp पर मैसेज करें'
+        popupBtnText: 'WhatsApp पर मैसेज करें',
+        consentText: 'मैंने ',
+        termsLinkText: 'नियम और शर्तें',
+        consentTextEnd: ' पढ़ी हैं और स्वीकार करता/करती हूं',
+        modalTitle: 'नियम और शर्तें',
+        acceptTermsBtn: 'मैं समझता/समझती हूं और स्वीकार करता/करती हूं'
     }
 };
 
@@ -116,7 +125,7 @@ function updateLanguage() {
         'final-patient-label', 'final-date-label', 'final-time-label', 'final-total-label',
         'mock-payment-note', 'upi-text', 'card-text', 'netbanking-text', 'back-text',
         'success-title', 'success-message', 'conf-link-info', 'book-another-text',
-        'popup-text', 'popup-btn-text'
+        'popup-text', 'popup-btn-text', 'modal-title', 'accept-terms-btn', 'terms-link-text'
     ];
     
     ids.forEach(id => {
@@ -126,6 +135,16 @@ function updateLanguage() {
             el.textContent = trans[key];
         }
     });
+    
+    // Update consent text separately since it has multiple parts
+    const consentTextStart = document.getElementById('consent-text-start');
+    const consentTextEnd = document.getElementById('consent-text-end');
+    if (consentTextStart) {
+        consentTextStart.textContent = trans.consentText;
+    }
+    if (consentTextEnd && trans.consentTextEnd) {
+        consentTextEnd.textContent = trans.consentTextEnd;
+    }
 }
 
 // Show specific page
@@ -344,6 +363,15 @@ function goToPayment() {
 
 // Process payment
 function processPayment(method) {
+    // Check if terms are accepted
+    const termsCheckbox = document.getElementById('terms-consent');
+    if (!termsCheckbox || !termsCheckbox.checked) {
+        alert(selectedLanguage === 'english' 
+            ? 'Please accept the Terms & Conditions to proceed with payment.' 
+            : 'भुगतान जारी रखने के लिए कृपया नियम और शर्तों को स्वीकार करें।');
+        return;
+    }
+
     const processingMsg = selectedLanguage === 'english' 
         ? 'Processing payment...' 
         : 'भुगतान प्रक्रिया में...';
@@ -355,6 +383,59 @@ function processPayment(method) {
     }, 1500);
     
     resetInactivityTimer();
+}
+
+// Toggle payment buttons based on consent checkbox
+function togglePaymentButtons() {
+    const checkbox = document.getElementById('terms-consent');
+    const paymentButtons = document.querySelectorAll('.payment-method-btn');
+    
+    paymentButtons.forEach(button => {
+        button.disabled = !checkbox.checked;
+    });
+}
+
+// Open Terms & Conditions modal
+function openTermsModal() {
+    const modal = document.getElementById('terms-modal');
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+    resetInactivityTimer();
+}
+
+// Close Terms & Conditions modal
+function closeTermsModal() {
+    const modal = document.getElementById('terms-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+}
+
+// Accept terms from modal
+function acceptTermsFromModal() {
+    const checkbox = document.getElementById('terms-consent');
+    if (checkbox) {
+        checkbox.checked = true;
+        togglePaymentButtons();
+    }
+    closeTermsModal();
+    
+    // Scroll to payment methods
+    const paymentMethods = document.getElementById('payment-methods');
+    if (paymentMethods) {
+        paymentMethods.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('terms-modal');
+    if (event.target === modal) {
+        closeTermsModal();
+    }
 }
 
 // Show confirmation page

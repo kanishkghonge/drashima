@@ -203,17 +203,30 @@
                     </div>
                 </div>
 
+                <!-- Consent Checkbox -->
+                <div class="consent-section">
+                    <label class="consent-checkbox">
+                        <input type="checkbox" id="terms-consent" onchange="togglePaymentButtons()">
+                        <span class="checkmark"></span>
+                        <span class="consent-text">
+                            <span id="consent-text-start">I have read and agree to the </span>
+                            <a href="#" onclick="openTermsModal(); return false;" class="terms-link" id="terms-link-text">Terms & Conditions</a>
+                            <span id="consent-text-end"></span>
+                        </span>
+                    </label>
+                </div>
+
                 <div class="mock-payment">
                     <p id="mock-payment-note">Mock Payment Gateway (Razorpay integration pending)</p>
                     
-                    <div class="payment-methods">
-                        <button class="payment-method-btn" onclick="processPayment('upi')">
+                    <div class="payment-methods" id="payment-methods">
+                        <button class="payment-method-btn" onclick="processPayment('upi')" disabled>
                             <span id="upi-text">UPI</span>
                         </button>
-                        <button class="payment-method-btn" onclick="processPayment('card')">
+                        <button class="payment-method-btn" onclick="processPayment('card')" disabled>
                             <span id="card-text">Card</span>
                         </button>
-                        <button class="payment-method-btn" onclick="processPayment('netbanking')">
+                        <button class="payment-method-btn" onclick="processPayment('netbanking')" disabled>
                             <span id="netbanking-text">Net Banking</span>
                         </button>
                     </div>
@@ -248,6 +261,102 @@
         </div>
     </div>
 
+    <!-- Terms & Conditions Modal -->
+    <div id="terms-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Terms & Conditions</h2>
+                <span class="close-modal" onclick="closeTermsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="terms-critical">
+                    <h3>⚠️ CRITICAL: NO EMERGENCY SERVICES</h3>
+                    <p>This platform and our online teleconsultation services are strictly not for emergencies. If you are experiencing chest pain, severe shortness of breath, heavy bleeding, sudden weakness, or any life-threatening symptoms, please immediately proceed to the nearest emergency department or call local emergency services (112 / 102).</p>
+                </div>
+
+                <div class="terms-section">
+                    <h3>1. Voluntary Booking & Telemedicine Consent</h3>
+                    <p>I confirm that I am booking this appointment voluntarily of my own choice and that I understand the following scope and limitations of remote care:</p>
+                    <ul>
+                        <li><strong>Aesthetic & Transformational Claims:</strong> I have not been induced by guaranteed-outcome claims, before/after transformations, or absolute promises of a cure.</li>
+                        <li><strong>Technological Scope:</strong> Online consultations are facilitated through electronic communications (video, audio, chat) and do not allow for a physical examination, direct palpation, or real-time diagnostic checks.</li>
+                        <li><strong>Preliminary Nature:</strong> Remote clinical opinions are based entirely on patient-disclosed history and are preliminary. A face-to-face consultation may still be required to formulate a definitive treatment plan.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>2. Patient Responsibilities & Disclosure Accuracy</h3>
+                    <p>To ensure patient safety and avoid critical diagnostic or treatment errors, the patient agrees to:</p>
+                    <ul>
+                        <li><strong>Full Disclosures:</strong> Provide complete, accurate, and truthful details regarding symptoms, past medical history, surgical history, current medications, allergies, and pregnancy status.</li>
+                        <li><strong>Assumption of Risk:</strong> The clinic and consulting doctors are completely exempt from any clinical or legal liability for adverse drug events, allergic reactions, or ineffective treatment plans arising from incomplete or withheld health information.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>3. Exclusion of Guaranteed Medical Outcomes</h3>
+                    <p>Medical treatments and individual patient responses are highly variable. The patient understands and agrees that:</p>
+                    <ul>
+                        <li><strong>No Guaranteed Cures:</strong> The clinic, its directors, and consulting physicians make no warranties, representations, or guarantees regarding specific results, success rates, or cures for any clinical condition.</li>
+                        <li><strong>Educational Content:</strong> All articles, calculators, and educational content on this website are for informational purposes only and do not constitute binding medical guarantees.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>4. Compliance with Diagnostics & Referrals</h3>
+                    <p>If, during the consultation, the doctor recommends an in-person clinical examination, diagnostic tests (e.g., blood tests, ultrasounds, MRIs), a referral to a hospital emergency room, or consultation with another specialist:</p>
+                    <ul>
+                        <li><strong>Patient Responsibility:</strong> The patient assumes full responsibility for arranging and undergoing these recommended actions in a timely manner.</li>
+                        <li><strong>Refusal of Advice:</strong> Failure to comply with these clinical recommendations constitutes a voluntary decision by the patient, and the clinic disclaims all liability for subsequent disease progression, missed diagnoses, or complications.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>5. Prescription Policies & Limitations</h3>
+                    <p>Medical prescriptions issued via teleconsultation are strictly governed by the Telemedicine Practice Guidelines of India:</p>
+                    <ul>
+                        <li><strong>Restricted Substances:</strong> No prescriptions will be issued online for narcotics, psychotropics, sedatives, controlled sleep aids, or other Schedule X drugs.</li>
+                        <li><strong>Clinician Discretion:</strong> The consulting physician reserves the absolute right to refuse a prescription, change a dosage, or recommend a physical visit if they determine it is clinically necessary for patient safety.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>6. Payments, Cancellations, and No-Shows</h3>
+                    <p>All appointment fees are processed securely through our payment partner, Razorpay:</p>
+                    <ul>
+                        <li><strong>Cancellation/Rescheduling:</strong> Appointments must be cancelled or rescheduled at least 24 hours prior to the booked slot. Late cancellations are subject to a cancellation charge.</li>
+                        <li><strong>No-Show Policy:</strong> If you fail to join the video link or arrive at the clinic within 15 minutes of the scheduled time, it will be marked as a "No-Show." No-show bookings are non-refundable.</li>
+                        <li><strong>Refunds:</strong> Approved refunds are initiated back to the original source account and take 5–7 business days to process.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>7. Digital Privacy & Communications</h3>
+                    <p>By scheduling an appointment, the patient consents to the clinic using digital channels (such as email, SMS, and WhatsApp) to transmit prescriptions, clinical notes, and receipts:</p>
+                    <ul>
+                        <li><strong>Transmission Security:</strong> While the clinic uses reasonable administrative and security measures to protect patient data, the patient acknowledges that digital communications carry inherent risk.</li>
+                        <li><strong>Technical Failures:</strong> In the event of video call dropouts or connection issues, the doctor will attempt to contact the patient via phone. If a technical issue prevents the consult, the appointment will be rescheduled at no additional cost.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>8. Limitation of Liability & Jurisdiction</h3>
+                    <p>In order to provide ethical and accessible healthcare services, the patient agrees to the following legal protections:</p>
+                    <ul>
+                        <li><strong>Liability Cap:</strong> To the maximum extent permitted by applicable law, the total aggregate liability of the clinic, its directors, employees, and consulting physicians for any claims of medical negligence, malpractice, contract, or tort shall be capped at the exact amount of the consultation fee paid by the patient for the specific booking in question.</li>
+                        <li><strong>Exclusion of Damages:</strong> The clinic and its doctors shall not be liable for any indirect, special, incidental, punitive, or consequential damages of any kind.</li>
+                        <li><strong>Governing Law & Jurisdiction:</strong> These terms shall be governed by the laws of India. Any legal disputes or claims arising out of the consultation or services must be submitted to the exclusive jurisdiction of the competent courts in Noida, Gautam Buddha Nagar, Uttar Pradesh, India.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="acceptTermsFromModal()">
+                    <span id="accept-terms-btn">I Understand and Accept</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- WhatsApp Floating Button -->
     <div id="whatsapp-float" class="whatsapp-float">
         <a href="https://wa.me/919972307030?text=Hello%20I%20need%20some%20help" target="_blank">
@@ -271,6 +380,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
