@@ -9,7 +9,6 @@ let currentTestimonialIndex = 0;
 // Translation object
 const translations = {
     english: {
-        bookingTitle: 'Book Your Consultation',
         bookConsultationText: 'Book Your Consultation',
         testimonialsHeading: 'Words from Happy Patients',
         timeSelectionTitle: 'Select Date & Time',
@@ -47,7 +46,6 @@ const translations = {
         popupBtnText: 'Message on WhatsApp'
     },
     hindi: {
-        bookingTitle: 'अपना परामर्श बुक करें',
         bookConsultationText: 'अपना परामर्श बुक करें',
         testimonialsHeading: 'खुश मरीजों के शब्द',
         timeSelectionTitle: 'तारीख और समय चुनें',
@@ -88,87 +86,69 @@ const translations = {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Script loaded successfully');
+    console.log('Script loaded');
     startInactivityTimer();
 });
 
-// Language selection
+// Language selection - SIMPLIFIED
 function selectLanguage(lang) {
     console.log('Language selected:', lang);
     selectedLanguage = lang;
-    updateLanguage();
-    console.log('About to show booking page');
     showPage('booking-page');
-    console.log('Page should be visible now');
+    // Update language after page is shown
+    setTimeout(() => {
+        updateLanguage();
+    }, 100);
     resetInactivityTimer();
 }
 
-// Update all text based on selected language
+// Update all text based on selected language - SAFE VERSION
 function updateLanguage() {
     const trans = translations[selectedLanguage];
     
-    // Helper function to safely update text content
-    const updateIfExists = (id, text) => {
-        try {
-            const element = document.getElementById(id);
-            if (element) {
-                element.textContent = text;
-            }
-        } catch (error) {
-            console.log('Could not update element:', id);
-        }
-    };
+    // Update only elements that exist RIGHT NOW
+    const ids = [
+        'book-consultation-text', 'testimonials-heading', 'consult-type', 'consult-fee',
+        'time-selection-title', 'date-label', 'time-label', 'next-btn-text',
+        'back-to-booking-text', 'back-to-time-text', 'details-title', 'label-name',
+        'label-age', 'label-phone', 'label-problem', 'summary-title', 'summary-fee',
+        'proceed-payment-text', 'payment-title', 'payment-summary-title',
+        'final-patient-label', 'final-date-label', 'final-time-label', 'final-total-label',
+        'mock-payment-note', 'upi-text', 'card-text', 'netbanking-text', 'back-text',
+        'success-title', 'success-message', 'conf-link-info', 'book-another-text',
+        'popup-text', 'popup-btn-text'
+    ];
     
-    // Update all text elements (only if they exist)
-    updateIfExists('book-consultation-text', trans.bookConsultationText);
-    updateIfExists('testimonials-heading', trans.testimonialsHeading);
-    updateIfExists('consult-type', trans.consultType);
-    updateIfExists('consult-fee', trans.consultFee);
-    updateIfExists('time-selection-title', trans.timeSelectionTitle);
-    updateIfExists('date-label', trans.dateLabel);
-    updateIfExists('time-label', trans.timeLabel);
-    updateIfExists('next-btn-text', trans.nextBtnText);
-    updateIfExists('back-to-booking-text', trans.backToBookingText);
-    updateIfExists('back-to-time-text', trans.backToTimeText);
-    updateIfExists('details-title', trans.detailsTitle);
-    updateIfExists('label-name', trans.labelName);
-    updateIfExists('label-age', trans.labelAge);
-    updateIfExists('label-phone', trans.labelPhone);
-    updateIfExists('label-problem', trans.labelProblem);
-    updateIfExists('summary-title', trans.summaryTitle);
-    updateIfExists('summary-fee', trans.summaryFee);
-    updateIfExists('proceed-payment-text', trans.proceedPaymentText);
-    updateIfExists('payment-title', trans.paymentTitle);
-    updateIfExists('payment-summary-title', trans.paymentSummaryTitle);
-    updateIfExists('final-patient-label', trans.finalPatientLabel);
-    updateIfExists('final-date-label', trans.finalDateLabel);
-    updateIfExists('final-time-label', trans.finalTimeLabel);
-    updateIfExists('final-total-label', trans.finalTotalLabel);
-    updateIfExists('mock-payment-note', trans.mockPaymentNote);
-    updateIfExists('upi-text', trans.upiText);
-    updateIfExists('card-text', trans.cardText);
-    updateIfExists('netbanking-text', trans.netbankingText);
-    updateIfExists('back-text', trans.backText);
-    updateIfExists('success-title', trans.successTitle);
-    updateIfExists('success-message', trans.successMessage);
-    updateIfExists('conf-link-info', trans.confLinkInfo);
-    updateIfExists('book-another-text', trans.bookAnotherText);
-    updateIfExists('popup-text', trans.popupText);
-    updateIfExists('popup-btn-text', trans.popupBtnText);
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && trans[id.replace(/-([a-z])/g, (g) => g[1].toUpperCase())]) {
+            const key = id.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+            el.textContent = trans[key];
+        }
+    });
 }
 
 // Show specific page
 function showPage(pageId) {
+    console.log('Showing page:', pageId);
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
     });
-    document.getElementById(pageId).classList.add('active');
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        console.log('Page activated');
+    } else {
+        console.error('Page not found:', pageId);
+    }
     resetInactivityTimer();
 }
 
 // Generate next 7 days date buttons
 function generateDateButtons() {
     const dateButtonsContainer = document.getElementById('date-buttons');
+    if (!dateButtonsContainer) return;
+    
     dateButtonsContainer.innerHTML = '';
     
     const daysOfWeek = selectedLanguage === 'english' 
@@ -201,7 +181,6 @@ function generateDateButtons() {
 
 // Select date
 function selectDate(date, button) {
-    // Remove previous selection
     document.querySelectorAll('.date-btn').forEach(btn => {
         btn.classList.remove('selected');
     });
@@ -209,12 +188,11 @@ function selectDate(date, button) {
     button.classList.add('selected');
     selectedDate = date;
     
-    // Generate time slots
     generateTimeSlots();
     
-    // Reset time selection
     selectedTime = null;
-    document.getElementById('next-to-details').disabled = true;
+    const nextBtn = document.getElementById('next-to-details');
+    if (nextBtn) nextBtn.disabled = true;
     
     resetInactivityTimer();
 }
@@ -222,10 +200,12 @@ function selectDate(date, button) {
 // Generate time slots (7pm - 10pm in 20-min intervals)
 function generateTimeSlots() {
     const timeSlotsContainer = document.getElementById('time-slots');
+    if (!timeSlotsContainer) return;
+    
     timeSlotsContainer.innerHTML = '';
     
-    const startHour = 19; // 7 PM
-    const endHour = 22; // 10 PM
+    const startHour = 19;
+    const endHour = 22;
     const intervalMinutes = 20;
     
     for (let hour = startHour; hour < endHour; hour++) {
@@ -233,7 +213,6 @@ function generateTimeSlots() {
             const timeSlot = document.createElement('button');
             timeSlot.className = 'time-slot';
             
-            // Format time
             let displayHour = hour;
             let period = 'PM';
             
@@ -248,8 +227,7 @@ function generateTimeSlots() {
             const timeString = `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
             timeSlot.textContent = timeString;
             
-            // Random booking simulation (for demo purposes)
-            const isBooked = Math.random() < 0.2; // 20% chance of being booked
+            const isBooked = Math.random() < 0.2;
             
             if (isBooked) {
                 timeSlot.classList.add('booked');
@@ -264,7 +242,6 @@ function generateTimeSlots() {
 
 // Select time slot
 function selectTimeSlot(time, button) {
-    // Remove previous selection
     document.querySelectorAll('.time-slot').forEach(btn => {
         btn.classList.remove('selected');
     });
@@ -272,8 +249,8 @@ function selectTimeSlot(time, button) {
     button.classList.add('selected');
     selectedTime = time;
     
-    // Enable continue button
-    document.getElementById('next-to-details').disabled = false;
+    const nextBtn = document.getElementById('next-to-details');
+    if (nextBtn) nextBtn.disabled = false;
     
     resetInactivityTimer();
 }
@@ -281,6 +258,7 @@ function selectTimeSlot(time, button) {
 // Show time selection page
 function showTimeSelection() {
     showPage('time-selection-page');
+    updateLanguage();
     generateDateButtons();
 }
 
@@ -293,7 +271,6 @@ function goToDetails() {
         return;
     }
     
-    // Update summary
     const dateString = selectedDate.toLocaleDateString(
         selectedLanguage === 'english' ? 'en-US' : 'hi-IN',
         { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
@@ -302,10 +279,14 @@ function goToDetails() {
     const summaryDateLabel = selectedLanguage === 'english' ? 'Date: ' : 'तारीख: ';
     const summaryTimeLabel = selectedLanguage === 'english' ? 'Time: ' : 'समय: ';
     
-    document.getElementById('summary-date').textContent = summaryDateLabel + dateString;
-    document.getElementById('summary-time').textContent = summaryTimeLabel + selectedTime;
+    const summaryDateEl = document.getElementById('summary-date');
+    const summaryTimeEl = document.getElementById('summary-time');
+    
+    if (summaryDateEl) summaryDateEl.textContent = summaryDateLabel + dateString;
+    if (summaryTimeEl) summaryTimeEl.textContent = summaryTimeLabel + selectedTime;
     
     showPage('details-page');
+    updateLanguage();
 }
 
 // Handle form submission
@@ -315,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Collect form data
             bookingData.name = document.getElementById('patient-name').value;
             bookingData.age = document.getElementById('patient-age').value;
             bookingData.phone = document.getElementById('patient-phone').value;
@@ -323,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
             bookingData.date = selectedDate;
             bookingData.time = selectedTime;
             
-            // Validate phone number
             const phoneRegex = /^[0-9]{10}$/;
             if (!phoneRegex.test(bookingData.phone)) {
                 alert(selectedLanguage === 'english' 
@@ -332,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Validate age (pediatric - typically 0-18)
             if (bookingData.age < 0 || bookingData.age > 18) {
                 alert(selectedLanguage === 'english' 
                     ? 'Please enter a valid age (0-18 years for pediatric consultation)' 
@@ -347,29 +325,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Go to payment page
 function goToPayment() {
-    // Update payment summary
     const dateString = selectedDate.toLocaleDateString(
         selectedLanguage === 'english' ? 'en-US' : 'hi-IN',
         { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
     );
     
-    document.getElementById('final-patient-name').textContent = bookingData.name;
-    document.getElementById('final-date').textContent = dateString;
-    document.getElementById('final-time').textContent = selectedTime;
+    const nameEl = document.getElementById('final-patient-name');
+    const dateEl = document.getElementById('final-date');
+    const timeEl = document.getElementById('final-time');
+    
+    if (nameEl) nameEl.textContent = bookingData.name;
+    if (dateEl) dateEl.textContent = dateString;
+    if (timeEl) timeEl.textContent = selectedTime;
     
     showPage('payment-page');
+    updateLanguage();
 }
 
 // Process payment
 function processPayment(method) {
-    // Simulate payment processing
     const processingMsg = selectedLanguage === 'english' 
         ? 'Processing payment...' 
         : 'भुगतान प्रक्रिया में...';
     
     alert(processingMsg);
     
-    // Simulate delay
     setTimeout(() => {
         showConfirmation();
     }, 1500);
@@ -388,26 +368,31 @@ function showConfirmation() {
     const dateLabel = selectedLanguage === 'english' ? 'Date: ' : 'तारीख: ';
     const timeLabel = selectedLanguage === 'english' ? 'Time: ' : 'समय: ';
     
-    document.getElementById('conf-patient').textContent = patientLabel + bookingData.name;
-    document.getElementById('conf-date').textContent = dateLabel + dateString;
-    document.getElementById('conf-time').textContent = timeLabel + selectedTime;
+    const patientEl = document.getElementById('conf-patient');
+    const dateEl = document.getElementById('conf-date');
+    const timeEl = document.getElementById('conf-time');
+    
+    if (patientEl) patientEl.textContent = patientLabel + bookingData.name;
+    if (dateEl) dateEl.textContent = dateLabel + dateString;
+    if (timeEl) timeEl.textContent = timeLabel + selectedTime;
     
     showPage('confirmation-page');
+    updateLanguage();
     
-    // Here you would typically send booking data to backend/ERPNext
     console.log('Booking Data:', bookingData);
 }
 
 // Go back function
 function goBack(page) {
     showPage(page + '-page');
+    updateLanguage();
 }
 
 // Inactivity timer for WhatsApp popup
 function startInactivityTimer() {
     inactivityTimer = setTimeout(() => {
         showWhatsAppPopup();
-    }, 20000); // 20 seconds
+    }, 20000);
 }
 
 function resetInactivityTimer() {
@@ -441,14 +426,14 @@ function changeTestimonial(direction) {
     const testimonials = document.querySelectorAll('.testimonial');
     const dots = document.querySelectorAll('.dot');
     
-    // Remove active class and add exit animation
+    if (testimonials.length === 0) return;
+    
     testimonials[currentTestimonialIndex].classList.remove('active');
     if (direction < 0) {
         testimonials[currentTestimonialIndex].classList.add('exit-left');
     }
     dots[currentTestimonialIndex].classList.remove('active');
     
-    // Update index
     currentTestimonialIndex += direction;
     if (currentTestimonialIndex < 0) {
         currentTestimonialIndex = testimonials.length - 1;
@@ -456,12 +441,10 @@ function changeTestimonial(direction) {
         currentTestimonialIndex = 0;
     }
     
-    // Remove exit animation from all
     setTimeout(() => {
         testimonials.forEach(t => t.classList.remove('exit-left'));
     }, 400);
     
-    // Add active class to new testimonial
     testimonials[currentTestimonialIndex].classList.add('active');
     dots[currentTestimonialIndex].classList.add('active');
     
