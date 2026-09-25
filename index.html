@@ -18,6 +18,7 @@
                 <img src="Screenshot 2026-09-25 140358.png" alt="Dr. Ashima Choudhry" class="doctor-photo">
                 <h1>Dr. Ashima Choudhry</h1>
                 <p class="subtitle">Pediatric Orthopaedic Specialist</p>
+                <p class="degrees">MBBS, MD Ortho</p>
             </div>
             
             <div class="content">
@@ -34,19 +35,71 @@
         </div>
     </div>
 
-    <!-- Booking Page -->
+    <!-- Booking Landing Page -->
     <div id="booking-page" class="page">
         <div class="container">
-            <div class="header-small">
-                <h1 id="booking-title">Select Date & Time</h1>
+            <div class="header">
+                <img src="Screenshot 2026-09-25 140358.png" alt="Dr. Ashima Choudhry" class="doctor-photo">
+                <h1>Dr. Ashima Choudhry</h1>
+                <p class="subtitle">Pediatric Orthopaedic Specialist</p>
+                <p class="degrees">MBBS, MD Ortho</p>
             </div>
             
             <div class="content">
-                <div class="info-box">
-                    <p id="consult-type">Online Teleconsultation</p>
-                    <p id="consult-fee">Consultation Fee: ₹800</p>
-                </div>
+                <button class="btn-primary" onclick="showTimeSelection()">
+                    <span id="book-consultation-text">Book Your Consultation</span>
+                </button>
 
+                <!-- Testimonials Section -->
+                <div class="testimonials-section">
+                    <h3 id="testimonials-heading">Words from Happy Patients</h3>
+                    
+                    <div class="testimonial-slider">
+                        <button class="slider-btn prev" onclick="changeTestimonial(-1)">‹</button>
+                        <div class="testimonial-container">
+                            <div class="testimonial active" data-index="0">
+                                <div class="stars">⭐⭐⭐⭐⭐</div>
+                                <p class="testimonial-text">"Dr. Ashima is wonderful with children. My son's club foot treatment was successful and she explained everything clearly."</p>
+                                <p class="testimonial-author">- Priya Sharma</p>
+                            </div>
+                            <div class="testimonial" data-index="1">
+                                <div class="stars">⭐⭐⭐⭐⭐</div>
+                                <p class="testimonial-text">"Excellent doctor! Very patient and caring. Treated my daughter's bone deformity with great expertise."</p>
+                                <p class="testimonial-author">- Rajesh Kumar</p>
+                            </div>
+                            <div class="testimonial" data-index="2">
+                                <div class="stars">⭐⭐⭐⭐⭐</div>
+                                <p class="testimonial-text">"Highly recommend! Dr. Ashima helped my child walk properly after years of difficulty. Very grateful."</p>
+                                <p class="testimonial-author">- Sunita Verma</p>
+                            </div>
+                            <div class="testimonial" data-index="3">
+                                <div class="stars">⭐⭐⭐⭐⭐</div>
+                                <p class="testimonial-text">"Professional and compassionate. Online consultation was convenient and very helpful for our family."</p>
+                                <p class="testimonial-author">- Amit Patel</p>
+                            </div>
+                        </div>
+                        <button class="slider-btn next" onclick="changeTestimonial(1)">›</button>
+                    </div>
+                    
+                    <div class="slider-dots">
+                        <span class="dot active" onclick="goToTestimonial(0)"></span>
+                        <span class="dot" onclick="goToTestimonial(1)"></span>
+                        <span class="dot" onclick="goToTestimonial(2)"></span>
+                        <span class="dot" onclick="goToTestimonial(3)"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Selection Page -->
+    <div id="time-selection-page" class="page">
+        <div class="container">
+            <div class="header-small">
+                <h1 id="time-selection-title">Select Date & Time</h1>
+            </div>
+            
+            <div class="content">
                 <!-- Date Selection -->
                 <div class="section">
                     <h3 id="date-label">Select Date</h3>
@@ -65,6 +118,10 @@
 
                 <button id="next-to-details" class="btn-primary" onclick="goToDetails()" disabled>
                     <span id="next-btn-text">Continue</span>
+                </button>
+                
+                <button class="btn-secondary" onclick="goBack('booking')">
+                    <span id="back-to-booking-text">Go Back</span>
                 </button>
             </div>
         </div>
@@ -108,6 +165,10 @@
 
                     <button type="submit" class="btn-primary">
                         <span id="proceed-payment-text">Proceed to Payment</span>
+                    </button>
+                    
+                    <button type="button" class="btn-secondary" onclick="goBack('time-selection')">
+                        <span id="back-to-time-text">Go Back</span>
                     </button>
                 </form>
             </div>

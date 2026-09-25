@@ -4,11 +4,17 @@ let selectedDate = null;
 let selectedTime = null;
 let bookingData = {};
 let inactivityTimer = null;
+let currentTestimonialIndex = 0;
 
 // Translation object
 const translations = {
     english: {
-        bookingTitle: 'Select Date & Time',
+        bookingTitle: 'Book Your Consultation',
+        bookConsultationText: 'Book Your Consultation',
+        testimonialsHeading: 'Words from Happy Patients',
+        timeSelectionTitle: 'Select Date & Time',
+        backToBookingText: 'Go Back',
+        backToTimeText: 'Go Back',
         consultType: 'Online Teleconsultation',
         consultFee: 'Consultation Fee: ₹800',
         dateLabel: 'Select Date',
@@ -41,7 +47,12 @@ const translations = {
         popupBtnText: 'Message on WhatsApp'
     },
     hindi: {
-        bookingTitle: 'तारीख और समय चुनें',
+        bookingTitle: 'अपना परामर्श बुक करें',
+        bookConsultationText: 'अपना परामर्श बुक करें',
+        testimonialsHeading: 'खुश मरीजों के शब्द',
+        timeSelectionTitle: 'तारीख और समय चुनें',
+        backToBookingText: 'वापस जाएं',
+        backToTimeText: 'वापस जाएं',
         consultType: 'ऑनलाइन टेलीकंसल्टेशन',
         consultFee: 'परामर्श शुल्क: ₹800',
         dateLabel: 'तारीख चुनें',
@@ -85,7 +96,6 @@ function selectLanguage(lang) {
     selectedLanguage = lang;
     updateLanguage();
     showPage('booking-page');
-    generateDateButtons();
     resetInactivityTimer();
 }
 
@@ -93,38 +103,48 @@ function selectLanguage(lang) {
 function updateLanguage() {
     const trans = translations[selectedLanguage];
     
-    // Update all text elements
-    document.getElementById('booking-title').textContent = trans.bookingTitle;
-    document.getElementById('consult-type').textContent = trans.consultType;
-    document.getElementById('consult-fee').textContent = trans.consultFee;
-    document.getElementById('date-label').textContent = trans.dateLabel;
-    document.getElementById('time-label').textContent = trans.timeLabel;
-    document.getElementById('next-btn-text').textContent = trans.nextBtnText;
-    document.getElementById('details-title').textContent = trans.detailsTitle;
-    document.getElementById('label-name').textContent = trans.labelName;
-    document.getElementById('label-age').textContent = trans.labelAge;
-    document.getElementById('label-phone').textContent = trans.labelPhone;
-    document.getElementById('label-problem').textContent = trans.labelProblem;
-    document.getElementById('summary-title').textContent = trans.summaryTitle;
-    document.getElementById('summary-fee').textContent = trans.summaryFee;
-    document.getElementById('proceed-payment-text').textContent = trans.proceedPaymentText;
-    document.getElementById('payment-title').textContent = trans.paymentTitle;
-    document.getElementById('payment-summary-title').textContent = trans.paymentSummaryTitle;
-    document.getElementById('final-patient-label').textContent = trans.finalPatientLabel;
-    document.getElementById('final-date-label').textContent = trans.finalDateLabel;
-    document.getElementById('final-time-label').textContent = trans.finalTimeLabel;
-    document.getElementById('final-total-label').textContent = trans.finalTotalLabel;
-    document.getElementById('mock-payment-note').textContent = trans.mockPaymentNote;
-    document.getElementById('upi-text').textContent = trans.upiText;
-    document.getElementById('card-text').textContent = trans.cardText;
-    document.getElementById('netbanking-text').textContent = trans.netbankingText;
-    document.getElementById('back-text').textContent = trans.backText;
-    document.getElementById('success-title').textContent = trans.successTitle;
-    document.getElementById('success-message').textContent = trans.successMessage;
-    document.getElementById('conf-link-info').textContent = trans.confLinkInfo;
-    document.getElementById('book-another-text').textContent = trans.bookAnotherText;
-    document.getElementById('popup-text').textContent = trans.popupText;
-    document.getElementById('popup-btn-text').textContent = trans.popupBtnText;
+    // Helper function to safely update text content
+    const updateIfExists = (id, text) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = text;
+    };
+    
+    // Update all text elements (only if they exist)
+    updateIfExists('book-consultation-text', trans.bookConsultationText);
+    updateIfExists('testimonials-heading', trans.testimonialsHeading);
+    updateIfExists('consult-type', trans.consultType);
+    updateIfExists('consult-fee', trans.consultFee);
+    updateIfExists('time-selection-title', trans.timeSelectionTitle);
+    updateIfExists('date-label', trans.dateLabel);
+    updateIfExists('time-label', trans.timeLabel);
+    updateIfExists('next-btn-text', trans.nextBtnText);
+    updateIfExists('back-to-booking-text', trans.backToBookingText);
+    updateIfExists('back-to-time-text', trans.backToTimeText);
+    updateIfExists('details-title', trans.detailsTitle);
+    updateIfExists('label-name', trans.labelName);
+    updateIfExists('label-age', trans.labelAge);
+    updateIfExists('label-phone', trans.labelPhone);
+    updateIfExists('label-problem', trans.labelProblem);
+    updateIfExists('summary-title', trans.summaryTitle);
+    updateIfExists('summary-fee', trans.summaryFee);
+    updateIfExists('proceed-payment-text', trans.proceedPaymentText);
+    updateIfExists('payment-title', trans.paymentTitle);
+    updateIfExists('payment-summary-title', trans.paymentSummaryTitle);
+    updateIfExists('final-patient-label', trans.finalPatientLabel);
+    updateIfExists('final-date-label', trans.finalDateLabel);
+    updateIfExists('final-time-label', trans.finalTimeLabel);
+    updateIfExists('final-total-label', trans.finalTotalLabel);
+    updateIfExists('mock-payment-note', trans.mockPaymentNote);
+    updateIfExists('upi-text', trans.upiText);
+    updateIfExists('card-text', trans.cardText);
+    updateIfExists('netbanking-text', trans.netbankingText);
+    updateIfExists('back-text', trans.backText);
+    updateIfExists('success-title', trans.successTitle);
+    updateIfExists('success-message', trans.successMessage);
+    updateIfExists('conf-link-info', trans.confLinkInfo);
+    updateIfExists('book-another-text', trans.bookAnotherText);
+    updateIfExists('popup-text', trans.popupText);
+    updateIfExists('popup-btn-text', trans.popupBtnText);
 }
 
 // Show specific page
@@ -246,6 +266,12 @@ function selectTimeSlot(time, button) {
     document.getElementById('next-to-details').disabled = false;
     
     resetInactivityTimer();
+}
+
+// Show time selection page
+function showTimeSelection() {
+    showPage('time-selection-page');
+    generateDateButtons();
 }
 
 // Go to details page
@@ -399,3 +425,60 @@ document.addEventListener('click', resetInactivityTimer);
 document.addEventListener('keypress', resetInactivityTimer);
 document.addEventListener('scroll', resetInactivityTimer);
 document.addEventListener('touchstart', resetInactivityTimer);
+
+// Testimonial slider functions
+function changeTestimonial(direction) {
+    const testimonials = document.querySelectorAll('.testimonial');
+    const dots = document.querySelectorAll('.dot');
+    
+    // Remove active class and add exit animation
+    testimonials[currentTestimonialIndex].classList.remove('active');
+    if (direction < 0) {
+        testimonials[currentTestimonialIndex].classList.add('exit-left');
+    }
+    dots[currentTestimonialIndex].classList.remove('active');
+    
+    // Update index
+    currentTestimonialIndex += direction;
+    if (currentTestimonialIndex < 0) {
+        currentTestimonialIndex = testimonials.length - 1;
+    } else if (currentTestimonialIndex >= testimonials.length) {
+        currentTestimonialIndex = 0;
+    }
+    
+    // Remove exit animation from all
+    setTimeout(() => {
+        testimonials.forEach(t => t.classList.remove('exit-left'));
+    }, 400);
+    
+    // Add active class to new testimonial
+    testimonials[currentTestimonialIndex].classList.add('active');
+    dots[currentTestimonialIndex].classList.add('active');
+    
+    resetInactivityTimer();
+}
+
+function goToTestimonial(index) {
+    const testimonials = document.querySelectorAll('.testimonial');
+    const dots = document.querySelectorAll('.dot');
+    
+    if (index === currentTestimonialIndex) return;
+    
+    testimonials[currentTestimonialIndex].classList.remove('active');
+    dots[currentTestimonialIndex].classList.remove('active');
+    
+    currentTestimonialIndex = index;
+    
+    testimonials[currentTestimonialIndex].classList.add('active');
+    dots[currentTestimonialIndex].classList.add('active');
+    
+    resetInactivityTimer();
+}
+
+// Auto-rotate testimonials every 5 seconds
+setInterval(() => {
+    const bookingPage = document.getElementById('booking-page');
+    if (bookingPage && bookingPage.classList.contains('active')) {
+        changeTestimonial(1);
+    }
+}, 5000);
