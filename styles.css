@@ -1,0 +1,621 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #1a202c;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Page Management */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Header Styles */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header-small {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.doctor-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 5px solid #667eea;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 17px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a202c;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+}
+
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+}
+
+/* Content Area */
+.content {
+    margin-top: 20px;
+}
+
+.content.center {
+    text-align: center;
+}
+
+/* Language Selection */
+.language-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.lang-btn {
+    padding: 28px;
+    font-size: 22px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+}
+
+.lang-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+}
+
+.lang-btn:active {
+    transform: translateY(-2px);
+}
+
+.lang-text {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Info Box */
+.info-box {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    border-left: 5px solid #667eea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.info-box p {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #334155;
+}
+
+/* Section */
+.section {
+    margin-bottom: 32px;
+}
+
+/* Date Buttons */
+.date-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.date-btn {
+    padding: 20px 14px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.date-btn:hover {
+    border-color: #667eea;
+    background: #f1f5f9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
+}
+
+.date-btn.selected {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.date-btn .day {
+    font-size: 13px;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    opacity: 0.9;
+}
+
+.date-btn .date {
+    font-size: 19px;
+    font-weight: 700;
+    display: block;
+}
+
+/* Time Slots */
+.time-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+}
+
+.time-slot {
+    padding: 18px 12px;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.time-slot:hover {
+    border-color: #667eea;
+    background: #f1f5f9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
+}
+
+.time-slot.selected {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.time-slot.booked {
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.time-slot.booked:hover {
+    border-color: #e2e8f0;
+    background: #f1f5f9;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+    width: 100%;
+    padding: 18px;
+    font-size: 17px;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 20px;
+    letter-spacing: 0.3px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+textarea.form-input {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* Booking Summary */
+.booking-summary {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    padding: 24px;
+    border-radius: 16px;
+    margin: 28px 0;
+    border-left: 5px solid #10b981;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.booking-summary h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    color: #065f46;
+}
+
+.booking-summary p {
+    margin: 8px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #047857;
+}
+
+/* Payment Summary */
+.payment-summary {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 28px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.payment-summary h3 {
+    font-size: 21px;
+    margin-bottom: 20px;
+    color: #1a202c;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row.total {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1a202c;
+    margin-top: 12px;
+    padding-top: 18px;
+    border-top: 2px solid #cbd5e0;
+}
+
+.amount {
+    color: #10b981;
+    font-weight: 800;
+}
+
+/* Mock Payment */
+.mock-payment {
+    margin: 32px 0;
+}
+
+.mock-payment p {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 24px;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.payment-method-btn {
+    padding: 22px;
+    font-size: 17px;
+    font-weight: 600;
+    background: white;
+    color: #1a202c;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.payment-method-btn:hover {
+    border-color: #667eea;
+    background: #f8fafc;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+}
+
+/* Confirmation Page */
+.success-icon {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    margin: 0 auto 30px;
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.3);
+}
+
+.confirmation-details {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 28px;
+    border-radius: 16px;
+    margin: 28px 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.confirmation-details p {
+    margin: 12px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #334155;
+}
+
+/* WhatsApp Float Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #25d366 0%, #20ba5a 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+}
+
+.whatsapp-float a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* WhatsApp Popup */
+.whatsapp-popup {
+    position: fixed;
+    bottom: 105px;
+    right: 30px;
+    background: white;
+    padding: 22px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 280px;
+}
+
+.whatsapp-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.popup-content p {
+    margin-bottom: 14px;
+    font-size: 15px;
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.popup-btn {
+    display: block;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, #25d366 0%, #20ba5a 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.popup-btn:hover {
+    background: linear-gradient(135deg, #20ba5a 0%, #1ba54d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    .container {
+        padding: 28px 24px;
+        border-radius: 20px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 23px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    .lang-btn {
+        padding: 24px;
+        font-size: 20px;
+    }
+
+    .date-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .time-slots {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        font-size: 16px;
+        padding: 17px;
+    }
+
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 58px;
+        height: 58px;
+    }
+
+    .whatsapp-popup {
+        bottom: 88px;
+        right: 20px;
+        max-width: 260px;
+    }
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page.active {
+    animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
