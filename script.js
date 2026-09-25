@@ -88,14 +88,18 @@ const translations = {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Script loaded successfully');
     startInactivityTimer();
 });
 
 // Language selection
 function selectLanguage(lang) {
+    console.log('Language selected:', lang);
     selectedLanguage = lang;
     updateLanguage();
+    console.log('About to show booking page');
     showPage('booking-page');
+    console.log('Page should be visible now');
     resetInactivityTimer();
 }
 
@@ -105,8 +109,14 @@ function updateLanguage() {
     
     // Helper function to safely update text content
     const updateIfExists = (id, text) => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = text;
+        try {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = text;
+            }
+        } catch (error) {
+            console.log('Could not update element:', id);
+        }
     };
     
     // Update all text elements (only if they exist)
